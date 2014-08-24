@@ -1,0 +1,73 @@
+fastboot.exe flash unlocktoken Unlock_code.bin
+fastboot.exe oem lock
+mount -o remount,rw /dev/block/mmcblk0p32 /system 
+adb remount
+
+
+rootfs / rootfs rw,relatime 0 0
+tmpfs /dev tmpfs rw,nosuid,relatime,mode=755 0 0
+devpts /dev/pts devpts rw,relatime,mode=600 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+none /acct cgroup rw,relatime,cpuacct 0 0
+tmpfs /mnt/asec tmpfs rw,relatime,mode=755,gid=1000 0 0
+tmpfs /mnt/obb tmpfs rw,relatime,mode=755,gid=1000 0 0
+none /dev/cpuctl cgroup rw,relatime,cpu 0 0
+none /dev/timer_group cgroup rw,relatime,timer_slack 0 0
+/dev/block/mmcblk0p32 /system ext4 rw,relatime,data=ordered 0 0
+/dev/block/mmcblk0p34 /data ext4 rw,nosuid,nodev,noatime,discard,noauto_da_alloc,data=ordered 0 0
+/dev/block/mmcblk0p33 /cache ext4 rw,nosuid,nodev,noatime,data=ordered 0 0
+/dev/block/mmcblk0p24 /devlog ext4 rw,nosuid,nodev,noatime,data=ordered 0 0
+/dev/block/mmcblk0p16 /firmware/mdm vfat ro,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=cp437,iocharset=iso8859-1,shortname=lower,errors=remount-ro 0 0
+tmpfs /data/qcks tmpfs rw,relatime,size=20480k,mode=750,gid=1000 0 0
+tmpfs /data/efs tmpfs rw,relatime,size=20480k,mode=750,gid=1000 0 0
+/dev/block/mmcblk0p17 /firmware/q6 vfat ro,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=cp437,iocharset=iso8859-1,shortname=lower,errors=remount-ro 0 0
+tmpfs /data/secure/data tmpfs rw,relatime,mode=755,gid=1000 0 0
+/dev/fuse /storage/sdcard0 fuse rw,nosuid,nodev,relatime,user_id=1023,group_id=1023,default_permissions,allow_other 0 0
+htcfs /data/htcfs fuse.htcfs rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other 0 0
+DxDrmServerIpc /data/DxDrm/fuse fuse.DxDrmServerIpc rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other 0 0
+
+
+Setup Bash
+Also, a few steps that appear to be missing:
+1. Before attempting to write to /system/bin, you need to remount it as writable
+./adb remount (through USB)
+OR
+mount -o rw,remount /dev/block/mtdblock1 /system (as root on terminal)
+2. chmod 755 /system/bin/bash_new (make it executable)
+3. chmod 755 /system/bin/nano (make it executable)
+
+
+These programs work on my rooted motorola cliq, with a few exceptions. I actually had to store the files (bash and nano) in /data/ (mtdblock2), and symlink to them from /system/bin, because there wasn't enough free space on the root partition.
+
+My steps were similar to this:
+1. Through USB run ./adb remount
+2. Login to android terminal as root (Terminal Emulator)
+3. Run these commands
+cp /sdcard/bashnano/profile /etc
+cp /sdcard/bashnano/bash /data
+cp /sdcard/bashnano/nano /data
+chmod 755 /data/bash
+chmod 755 /data/nano
+cd /system/bin/
+mv sh sh.old
+ln -s /data/bash sh
+ln -s /data/bash bash
+ln -s /data/nano nano
+
+
+Using BASH special keys:
+Control (Ctrl) key = Wheel button
+Escape key (esc) = Ctrl + 1 + 2 (comes in handy big time if using vi)
+Go to beginning of line = Ctrl +a
+Go to end of line = Ctrl + e
+Tab completion = Ctrl + iy
+The commandline redirection ">" = Shift + Alt + l
+The commandline redirection "<" = Shift + Alt + k
+The pipe character "|" = Shift + Alt + a
+Cut = Ctrl + w
+Paste = Ctrl + y
+Reverse search previous commands = Ctrl + r
+Break reverse search = Ctrl + g
+Reverse slash "\" = Ctrl + Shift + n
+Carrot key "^" = Ctrl + Shift + j
