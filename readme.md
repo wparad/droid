@@ -10,4 +10,6 @@ HTC DNA:
 * Enter Recovery
 * Copy over and apply: 
     * Apply update.zip of the new ROM
-    * Apply HTC-DNA_20151117-UPDATE-SuperSU-v2.46.zip
+    * Apply [HTC-DNA_20151117-UPDATE-SuperSU-v2.46.zip](http://forum.xda-developers.com/showthread.php?t=1538053)
+
+[Additional help](http://forum.xda-developers.com/showthread.php?t=1538053)
