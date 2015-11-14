@@ -1,6 +1,10 @@
 HTC DNA:
-1) Follow HTCDev to unlook phone
-2) Root Phone
-3) fastboot flash recovery twrp.img
-4) fastboot flash boot boot.img (from zip archive of install)
-5) apply update.zip
+
+* Follow HTCDev to unlook phone
+* Root Phone
+* Enter fastboot
+* Replace recovery with TeamWin
+	* `fastboot flash recovery twrp.img`
+* Install new ROM
+	* `fastboot flash boot boot.img` (from zip archive of install)
+* apply update.zip of the new ROM
